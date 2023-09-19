@@ -1,15 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <MenuPage></MenuPage>
+  <router-view/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MenuPage from './components/MenuPage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MenuPage
   }
 }
 </script>

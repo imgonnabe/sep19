@@ -1,0 +1,77 @@
+<template>
+  <div>
+    <h1>board</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>날짜</th>
+                <th>조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="n in list" v-bind:key="n.bno">
+                <td>{{n.bno}}</td>
+                <td class="title">
+                    <a v-on:click="viewDetail(`${n.bno}`)">{{n.btitle}}</a>
+                </td>
+                <td>{{n.m_name}}</td>
+                <td>{{n.bdate}}</td>
+                <td>{{n.blike}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+    name:'BoardList',
+    data(){
+        return{
+            // this.$.router=라우터 객체
+            // this.$.route=라우터 상태를 관리하는 객체
+            list:[],
+            requestBody: this.$route.query,
+        };
+    },
+    mounted(){
+        axios.get('http://localhost:3000/board')
+        .then((res) => {//function(res){}
+            // alert(res.data.arr[0].btitle);
+            this.list = res.data.arr;
+        })
+        .catch((err) => {
+            alert('문제가 발생했습니다.' + err);
+        });
+    },
+    methods:{
+        viewDetail(bno){
+            // alert(bno + '번을 눌렀습니다.')
+            this.requestBody.bno = bno;
+            this.$router.push({
+                path: './detail',
+                query : this.requestBody
+            });
+        }
+    }
+}
+</script>
+
+<style scoped>
+table {
+ width: 800px;
+ height: 300px;
+ border-collapse: collapse;
+ margin: 0 auto;}
+th {background-color: rgb(169, 109, 109);}
+td {border-bottom: 1px gray solid;}
+tr:hover {background-color: gray;color: white;}
+.title {text-align: left;}
+#td1 {width: 10%;}
+#td2 {width: 30%;}
+td a {color: black;}
+</style>
