@@ -35,7 +35,7 @@ export default {
       // alert('페이지가 구동되면 바로 호출됩니다.')
       axios.get('http://localhost:3000/detail?bno=' + this.detail.bno)
       .then((res) => {
-        this.detail = res.data
+        this.detail = res.data.detail
       })
       .catch((err) => {
         alert('오류' + err)

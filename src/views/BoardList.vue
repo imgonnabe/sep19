@@ -23,6 +23,7 @@
             </tr>
         </tbody>
     </table>
+    <button @click="write">글쓰기</button>
   </div>
 </template>
 
@@ -51,11 +52,14 @@ export default {
     methods:{
         viewDetail(bno){
             // alert(bno + '번을 눌렀습니다.')
-            this.requestBody.bno = bno;
+            this.requestBody.bno = bno
             this.$router.push({
                 path: './detail',
                 query : this.requestBody
             });
+        },
+        write(){
+            this.$router.push("write");
         }
     }
 }

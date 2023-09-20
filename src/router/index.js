@@ -6,13 +6,16 @@ import mainPage from '@/views/MainPage.vue'
 import loginPage from '@/views/LoginPage.vue'
 import joinPage from '@/views/JoinPage.vue'
 import detailPage from '@/views/DetailPage.vue'
+import writePage from '@/views/WritePage.vue'
+
 const routes = [
  {path: '/', name: 'index', component: indexPage},
  {path: '/join', name: 'join', component: joinPage},
  {path: '/boardList', name: 'boardList', component: boardList},
  {path: '/main', name: 'main', component: mainPage},
  {path: '/login', name: 'login', component: loginPage},
- {path: '/detail', name: 'detailPage', component: detailPage}
+ {path: '/detail', name: 'detailPage', component: detailPage},
+ {path: '/write', name: 'writePage', component: writePage}
 ]
 const router = createRouter({
  history: createWebHistory(process.env.BASE_URL),
