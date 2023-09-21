@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     data(){
       return{
@@ -22,7 +21,7 @@ export default {
         saveData.title = this.title;
         saveData.content = this.content;
         // alert(saveData.title)
-        axios.post('http://localhost:3000/write', JSON.stringify(saveData), {
+        this.$axios.post(this.$server + '/write', JSON.stringify(saveData), {
           headers:{"Content-Type":"application/json"}
         })
         .then((res) => {

@@ -7,6 +7,7 @@ import loginPage from '@/views/LoginPage.vue'
 import joinPage from '@/views/JoinPage.vue'
 import detailPage from '@/views/DetailPage.vue'
 import writePage from '@/views/WritePage.vue'
+import updatePage from '@/views/UpdatePage.vue'
 
 const routes = [
  {path: '/', name: 'index', component: indexPage},
@@ -15,7 +16,8 @@ const routes = [
  {path: '/main', name: 'main', component: mainPage},
  {path: '/login', name: 'login', component: loginPage},
  {path: '/detail', name: 'detailPage', component: detailPage},
- {path: '/write', name: 'writePage', component: writePage}
+ {path: '/write', name: 'writePage', component: writePage},
+ {path: '/update', name: 'updatePage', component: updatePage}
 ]
 const router = createRouter({
  history: createWebHistory(process.env.BASE_URL),

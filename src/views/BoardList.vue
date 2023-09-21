@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     name:'BoardList',
     data(){
@@ -40,7 +39,7 @@ export default {
         };
     },
     mounted(){
-        axios.get('http://localhost:3000/board')
+        this.$axios.get(this.$server + '/board')
         .then((res) => {//function(res){}
             // alert(res.data.arr[0].btitle);
             this.list = res.data.arr;
