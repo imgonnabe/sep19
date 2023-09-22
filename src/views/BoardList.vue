@@ -15,7 +15,7 @@
             <tr v-for="n in list" v-bind:key="n.bno">
                 <td>{{n.bno}}</td>
                 <td class="title">
-                    <a v-on:click="viewDetail(`${n.bno}`)">{{n.btitle}}</a>
+                    <a v-on:click="viewDetail(`${n.bno}`)">{{n.btitle}}({{n.commentcount}})</a>
                 </td>
                 <td>{{n.m_name}}</td>
                 <td>{{n.bdate}}</td>
@@ -33,9 +33,9 @@ export default {
     data(){
         return{
             // this.$.router=라우터 객체
-            // this.$.route=라우터 상태를 관리하는 객체
+            // this.$.route=라우터 상태를 관리하는 객체(현재 탐색 중인 현재 경로를 나타내는 객체)
             list:[],
-            requestBody: this.$route.query,
+            requestBody: this.$route.query,// 현재 경로 URL의 쿼리 매개변수
         };
     },
     mounted(){
@@ -45,15 +45,16 @@ export default {
             this.list = res.data.arr;
         })
         .catch((err) => {
-            alert('문제가 발생했습니다.' + err);
+            alert('문제가 발생했습니다.boardList ' + err);
         });
+        
     },
     methods:{
         viewDetail(bno){
             // alert(bno + '번을 눌렀습니다.')
             this.requestBody.bno = bno
             this.$router.push({
-                path: './detail',
+                path: '/detail',
                 query : this.requestBody
             });
         },

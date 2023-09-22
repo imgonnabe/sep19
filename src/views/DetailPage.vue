@@ -9,7 +9,19 @@
     날짜 : {{detail.bdate}}<br>
     내용 : {{detail.bcontent}}<br>
     <button v-on:click="board">게시판으로</button>
+    <hr>
   </div>
+    <div class="comment" v-for="n in comments" v-bind:key="n.c_no">
+        <div class="m_id">{{n.m_id}}({{n.m_name}})</div>
+        <div class="c_comment">{{n.c_comment}}</div>
+        <div class="c_date">{{n.c_date}}</div>
+        <input type="hidden" value="{{n.c_no}}">
+        <button v-on:click="cupdate">수정</button>
+        <button v-on:click="cdeletePost">삭제</button>
+        <hr>
+    </div>
+    <textarea v-model="c_comment"></textarea>
+    <button v-on:click="cwrite">댓글쓰기</button>
 </template>
 
 <script>
@@ -24,7 +36,11 @@ export default {
         bdate:'',
         m_name:'',
         blike:'',
-      }
+      },
+      comments:[],
+      c_comment:null,
+      c_no:'',
+      m_id: 'aaaa'
     }
   },
   mounted(){
@@ -39,6 +55,13 @@ export default {
       this.$axios.get(this.$server + '/detail?bno=' + this.$route.query.bno)
       .then((res) => {
         this.detail = res.data.detail
+      })
+      .catch((err) => {
+        alert('오류' + err)
+      });
+      this.$axios.get(this.$server + '/comments?bno=' + this.detail.bno)
+      .then((res) => {
+        this.comments = res.data.arr2
       })
       .catch((err) => {
         alert('오류' + err)
@@ -77,11 +100,70 @@ export default {
           query:this.requestBody
         })
       }
+    },
+    cwrite(){
+    let saveData2 = {};
+        saveData2.c_comment = this.c_comment;
+        saveData2.m_id = this.m_id;
+        saveData2.bno = this.detail.bno;
+        this.$axios.post(this.$server + '/cwrite', JSON.stringify(saveData2), {
+          headers:{"Content-Type":"application/json"}
+        })
+        .then((res) => {
+          if(res.data.result == 1){
+            
+            this.$router.push({
+                path: '/detail',
+                query : this.requestBody
+            });
+          } else {
+            alert("문제 발생")
+          }
+        })
+        .catch((err) => {
+          alert('에러' + err)
+        });
+      },
+      cdeletePost(){
+      if(confirm('삭제하시겠습니까?')){
+        // alert(this.detail.bno);
+        alert('삭제합니다.')
+        this.$axios({
+          url: this.$server +'/cdelete',
+          method:'post',
+          params:{cno:this.c_no}
+        })
+        .then((res) => {
+          if(res.data.result == 1){
+            alert('삭제되었습니다.')
+            this.$router.push({
+              path:'/detail',
+              params: this.requestBody
+            })
+          } else {
+            alert('삭제되지 않았습니다.')
+          }
+        })
+        .catch((err) => {
+          alert(err)
+        })   
+      }
+    },
+    cupdate(){
+      if(confirm('수정하시겠습니까?')){
+        this.$router.push({
+          path: '/update',
+          // bno:this.detail.bno
+          query:this.requestBody
+        })
+      }
     }
   }
 }
 </script>
 
 <style>
-
+.comment{
+  background-color: bisque;
+}
 </style>
