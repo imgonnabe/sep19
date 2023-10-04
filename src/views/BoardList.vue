@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>board</h1>
+    <h1>board : {{this.userInfo.m_name}}</h1>
     <table>
         <thead>
             <tr>
@@ -31,7 +31,7 @@
       <button v-on:click="nextPage">&gt;</button>
       <button v-on:click="board(endpage)">&gt;&gt;</button>
     </div>
-    <button @click="write">글쓰기</button>
+    <button v-if="this.$store.getters.getUserId != null" @click="write">글쓰기</button>
   </div>
 </template>
 
@@ -51,7 +51,11 @@ export default {
             startpage: null,
             endpage: null,
             firstRecordIndex: null,
-            lastRecordIndex: null
+            lastRecordIndex: null,
+            userInfo:{
+                m_name: this.$store.getters.getUserName,
+                m_id: this.$store.getters.getUseId
+            }
         };
     },
     mounted(){       
@@ -60,7 +64,7 @@ export default {
     methods:{
         paging(totalcount){
             this.totalcount = totalcount
-            this.totalpage = Math.ceil(this.totalcount / 10)
+            this.totalpage = Math.ceil(this.totalcount / 20)
             this.startpage =  1
             this.endpage = this.totalpage
             this.firstRecordIndex = this.pageNo % 10 != 0 ? parseInt(this.pageNo / 10) * 10 + 1 : this.pageNo - 9
