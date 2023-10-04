@@ -8,11 +8,11 @@ const store = createStore ({
     plugins : [createPersistedState()],// f5키 눌렀을 때 local에서 가져오기(session 유지)
     getters: {
         getUserName(state){
-        return state.m_name;
-    },
-    getUserId(state){
-        return state.m_id;
-    }
+            return state.m_name;
+        },
+        getUserId(state){
+            return state.m_id;
+        }
     },
     mutations: {
     setUser(state, userInfo){
