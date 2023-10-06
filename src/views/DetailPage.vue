@@ -2,8 +2,8 @@
   <div class="board-detail">
     글번호 : {{detail.bno}}<br>
     글제목 : {{detail.btitle}}
-    <button v-on:click="update">수정</button>
-    <button v-on:click="deletePost">삭제</button>
+    <button v-if="this.userInfo.m_id == this.detail.m_id" v-on:click="update">수정</button>
+    <button v-if="this.userInfo.m_id == this.detail.m_id" v-on:click="deletePost">삭제</button>
     <br>
     글쓴이 : {{detail.m_name}}<br>
     날짜 : {{detail.bdate}}<br>
@@ -15,13 +15,18 @@
         <div class="m_id">{{n.m_id}}({{n.m_name}})</div>
         <div class="c_comment">{{n.c_comment}}</div>
         <div class="c_date">{{n.c_date}}</div>
-        <input type="hidden" value="{{n.c_no}}">
-        <button v-on:click="cupdate">수정</button>
-        <button v-on:click="cdeletePost">삭제</button>
+        <input class="c_cno" type="hidden" value="{{n.c_no}}">
+        <button v-if="this.userInfo.m_id == n.m_id" v-on:click="cupdate">수정</button>
+        <button v-if="this.userInfo.m_id == n.m_id" v-on:click="cdeletePost(n.c_no)">삭제</button>
         <hr>
     </div>
-    <textarea v-model="c_comment"></textarea>
-    <button v-on:click="cwrite">댓글쓰기</button>
+    <div v-if="this.userInfo.m_name != null">
+      <textarea v-model="c_comment"></textarea>
+      <button v-on:click="cwrite">댓글쓰기</button>
+    </div>
+    <div v-if="this.userInfo.m_name != null">
+      <button v-on:click="board">게시판으로</button>
+    </div>
 </template>
 
 <script>
@@ -35,12 +40,16 @@ export default {
         bcontent:'',
         bdate:'',
         m_name:'',
-        blike:'',
+        m_id: '',
+        blike:''
       },
       comments:[],
       c_comment:null,
       c_no:'',
-      m_id: 'aaaa'
+      userInfo:{
+          m_name: this.$store.getters.getUserName,
+          m_id: this.$store.getters.getUserId
+      }
     }
   },
   mounted(){
@@ -104,7 +113,7 @@ export default {
     cwrite(){
     let saveData2 = {};
         saveData2.c_comment = this.c_comment;
-        saveData2.m_id = this.m_id;
+        saveData2.m_id = this.userInfo.m_id;
         saveData2.bno = this.detail.bno;
         this.$axios.post(this.$server + '/cwrite', JSON.stringify(saveData2), {
           headers:{"Content-Type":"application/json"}
@@ -124,14 +133,14 @@ export default {
           alert('에러' + err)
         });
       },
-      cdeletePost(){
+      cdeletePost(c_no){
       if(confirm('삭제하시겠습니까?')){
         // alert(this.detail.bno);
         alert('삭제합니다.')
         this.$axios({
           url: this.$server +'/cdelete',
           method:'post',
-          params:{cno:this.c_no}
+          params:{cno:c_no}
         })
         .then((res) => {
           if(res.data.result == 1){
@@ -152,7 +161,7 @@ export default {
     cupdate(){
       if(confirm('수정하시겠습니까?')){
         this.$router.push({
-          path: '/update',
+          path: '/cupdate',
           // bno:this.detail.bno
           query:this.requestBody
         })

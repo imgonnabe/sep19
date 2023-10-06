@@ -13,13 +13,28 @@ export default {
       return{
         title:null,
         content:null,
+        userInfo:{
+          m_name: this.$store.getters.getUserName,
+          m_id: this.$store.getters.getUserId
+        }
       }
     },
+    mounted(){
+      // 로그인 검사
+      this.loginCheck();
+    },
     methods:{
+      loginCheck(){
+        if(this.$store.getters.getUserId == null){
+          alert('로그인하세요.')
+          this.$router.push('login')
+        }
+      },
       write(){
         let saveData = {};
         saveData.title = this.title;
         saveData.content = this.content;
+        saveData.m_id = this.userInfo.m_id
         // alert(saveData.title)
         this.$axios.post(this.$server + '/write', JSON.stringify(saveData), {
           headers:{"Content-Type":"application/json"}

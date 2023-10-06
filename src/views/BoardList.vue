@@ -54,7 +54,7 @@ export default {
             lastRecordIndex: null,
             userInfo:{
                 m_name: this.$store.getters.getUserName,
-                m_id: this.$store.getters.getUseId
+                m_id: this.$store.getters.getUserId
             }
         };
     },
